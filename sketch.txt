@@ -9,17 +9,28 @@
 */
 
 let canvasSize;
+// Declare background images
 let imgBackground1;
 let imgBackground2;
 // Camera that will view our 3D scene.
 let cam1;
+// Declare frame count to keep animation on track.
 let frameCounter;
+// Position variables for the camera.
 let zPos;
 let xPos;
+// Declare sprite image and mapper.
+// ImgSprite object
+let wolfSprite;
+// Image
+let wolfSpriteSheet;
+// SpriteSheetMapper object
+let wolfSpriteMapper;
 
 function preload() {
 	
   // Load an image that you uploaded into your P5JS WebEditor assets folder.
+  wolfSpriteSheet = loadImage("wolf_image_flip2.png");
   imgBackground1 = loadImage("storefront.png");
   imgBackground2 = loadImage("fullbar.png");
 }
@@ -45,6 +56,10 @@ function setup() {
   frameCounter = 0;
   zPos = 80;
   xPos = 0;
+  wolfSpriteMapper = new SpriteSheetMapper(wolfSpriteSheet, 6, 3);
+  wolfSpriteMapper.setAction(0);
+  wolfSprite = new ImgSprite("wolf", wolfSpriteMapper, 300, 384);
+  frameRate(60);
 }
 
 function draw() {
@@ -55,8 +70,10 @@ function draw() {
   }
   else if (frameCounter < 1600)
     scene2();
-  else if (frameCounter < 3600)
+  else if (frameCounter < 3600){
     scene3();
+  }
+  else
     background(220);
   frameCounter++;
 }
@@ -95,7 +112,7 @@ function scene2(){
   cam1.setPosition(xPos,0,-60);
   cam1.lookAt(xPos,0,0);
   if(xPos < 620)
-    xPos++;
+    xPos+=2;
   // Replace fill command with command that specifies current texture image.
   texture(imgBackground2);
   let sideX = 1024;
@@ -120,7 +137,14 @@ function scene2(){
   vertex(sideX,sideY,  imgBackground2.width,0);
 
   endShape(CLOSE);
-  
+  wolfSprite.setPositionX(500);
+  wolfSprite.setPositionY(-50);
+  //wolfSprite.setScaleX(1.5);
+  //wolfSprite.setRotationZ(90);
+  //wolfSprite.applyTransforms();
+  wolfSprite.draw();
+  if(frameCounter % 16 == 0)
+    wolfSprite.update();
 }
 
 function scene3(){
