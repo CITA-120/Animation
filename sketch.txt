@@ -26,12 +26,22 @@ let wolfSprite;
 let wolfSpriteSheet;
 // SpriteSheetMapper object
 let wolfSpriteMapper;
+// Bat sprite, ImgSprite object.
+let batSprite;
+// Bat sprite sheet
+let batSpriteSheet;
+// Bat sprite mapper, SpriteSheetMapper object.
+let batSpriteMapper;
+// Bat sprite X position variable.
+let batX;
+
 
 function preload() {
 	
   // Load an image that you uploaded into your P5JS WebEditor assets folder.
   wolfSpriteSheet = loadImage("wolf_image_flip2.png");
-  imgBackground1 = loadImage("storefront.png");
+  batSpriteSheet = loadImage("sprite_sheet2.png");
+  imgBackground1 = loadImage("storefront2_flip.png");
   imgBackground2 = loadImage("fullbar.png");
 }
 
@@ -60,6 +70,10 @@ function setup() {
   wolfSpriteMapper.setAction(0);
   wolfSprite = new ImgSprite("wolf", wolfSpriteMapper, 300, 384);
   frameRate(60);
+  batSpriteMapper = new SpriteSheetMapper(batSpriteSheet, 4,3);
+  batSpriteMapper.setAction(3);
+  batSprite = new ImgSprite("bat", batSpriteMapper, 95, 128);
+  batX = 1000;
 }
 
 function draw() {
@@ -68,9 +82,9 @@ function draw() {
     zPos-=0.1;
     cam1.setPosition(0,0,zPos);
   }
-  else if (frameCounter < 1600)
+  else if (frameCounter < 3600)
     scene2();
-  else if (frameCounter < 3600){
+  else if (frameCounter < 7200){
     scene3();
   }
   else
@@ -109,7 +123,7 @@ function scene1(){
 
 function scene2(){
   background(220);
-  cam1.setPosition(xPos,0,-60);
+  cam1.setPosition(xPos,0,-63);
   cam1.lookAt(xPos,0,0);
   if(xPos < 620)
     xPos+=2;
@@ -137,7 +151,17 @@ function scene2(){
   vertex(sideX,sideY,  imgBackground2.width,0);
 
   endShape(CLOSE);
-  wolfSprite.setPositionX(500);
+  
+  batSprite.setPositionX(batX);
+  batSprite.setPositionY(100);
+  if(frameCounter > 650){
+    batX-=4;
+    batSprite.draw();
+    if(frameCounter % 8 == 0)
+      batSprite.update();
+    
+  }
+  wolfSprite.setPositionX(400);
   wolfSprite.setPositionY(-50);
   //wolfSprite.setScaleX(1.5);
   //wolfSprite.setRotationZ(90);
